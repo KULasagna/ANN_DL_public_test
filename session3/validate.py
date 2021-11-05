@@ -17,19 +17,19 @@ def pca(PCA):
     signs = np.ones((pca.p,))  # Take care of possibly different signs for eigenvectors
     valid = True
     for i in range(pca.p):
-    if np.allclose(pca.eig_vecs[:,i], -vecs[:,i]):
-        signs[i] = -1
-    elif not np.allclose(pca.eig_vecs[:,i], vecs[:,i]):
-        valid = False
+        if np.allclose(pca.eig_vecs[:,i], -vecs[:,i]):
+            signs[i] = -1
+        elif not np.allclose(pca.eig_vecs[:,i], vecs[:,i]):
+            valid = False
     assert valid, "Incorrect calculation of eigenvectors"
 
     # project and reconstruct checks
     for q in range(1, pca.p):
-    assert pca.E(q).shape == (pca.p, q), "Incorrect dimensionality of projection matrix E"
-    z = pca.project(data, q)
-    assert z.shape == (pca.N, q), "Wrong dimensionality of projected vector"
-    x = pca.reconstruct(z)
-    assert x.shape == (pca.N, pca.p), "Wrong dimensionality of projected vector"
+        assert pca.E(q).shape == (pca.p, q), "Incorrect dimensionality of projection matrix E"
+        z = pca.project(data, q)
+        assert z.shape == (pca.N, q), "Wrong dimensionality of projected vector"
+        x = pca.reconstruct(z)
+        assert x.shape == (pca.N, pca.p), "Wrong dimensionality of projected vector"
     z = pca.project(data, pca.p)
     zc = [[-0.6455339, -0.28079716, 0.25384826],
           [-2.38670856, 0.67972026, 0.04003273],
@@ -42,7 +42,7 @@ def pca(PCA):
 
     # mse checks
     for q in range(1, pca.p):
-    assert isinstance(pca.mse(data, q), float), "Incorrect return value of mse function, this should return a scalar float."
+        assert isinstance(pca.mse(data, q), float), "Incorrect return value of mse function, this should return a scalar float."
     assert np.isclose(pca.mse(data, 2), 0.03428271323938805)
 
     print("Your implementation works correctly!")
